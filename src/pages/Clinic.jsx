@@ -18,7 +18,7 @@ export const Clinic = () => {
 			if (event.status === STATUS.confirmed) {
 				Toast.fire({
 					icon: 'success',
-					title: `Event "${event.title}" Already Confirmed`,
+					title: `Event "${event.title}" Already Reserved`,
 					timer: 2500,
 				});
 				return;
@@ -27,14 +27,14 @@ export const Clinic = () => {
 			if (event.status === STATUS.rejected) {
 				Toast.fire({
 					icon: 'error',
-					title: `Event "${event.title}" Already Rejected`,
+					title: `Event "${event.title}" Already Declined`,
 					timer: 2500,
 				});
 				return;
 			}
 
 			const result = await Swal.fire({
-				title: `Confirm "${event.title}" Or Reject? `,
+				title: `Approve "${event.title}" or Decline? `,
 				showCancelButton: true,
 				confirmButtonText: 'Confirm',
 				cancelButtonText: 'Reject',
