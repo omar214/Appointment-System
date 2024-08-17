@@ -45,6 +45,12 @@ export const Clinic = () => {
 
 			const status = result.isConfirmed ? STATUS.confirmed : STATUS.rejected;
 			setEventStatus(event.id, status);
+
+			Toast.fire({
+				icon: 'success',
+				title: `Event "${event.title}" ${status === STATUS.confirmed ? 'Confirmed' : 'Rejected'} Successfully`,
+				timer: 2500,
+			});
 		},
 		[setEventStatus],
 	);
