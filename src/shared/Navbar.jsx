@@ -54,8 +54,6 @@ export const Navbar = ({ toggleSidebar }) => {
 					<Typography
 						variant="h5"
 						noWrap
-						component="a"
-						href="#app-bar-with-responsive-menu"
 						sx={{
 							mr: 2,
 							flexGrow: 1,

@@ -123,11 +123,5 @@ const navItems = {
 			url: 'patient',
 			icon: <InventoryIcon />,
 		},
-		{
-			id: 3,
-			text: 'Patient History',
-			url: 'patient-history',
-			icon: <TrendingUpOutlined />,
-		},
 	],
 };

@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 const Layout = ({ ...props }) => {
 	const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
 	const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
