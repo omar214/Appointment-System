@@ -15,8 +15,31 @@ export const Patient = () => {
 	const { events, addNewEvent } = useEvents();
 	const [user] = useLocalStorage('user', {});
 
+	const checkForOverlap = useCallback(
+		({ start, end }) => {
+			const isOverlapping = events.some(
+				(event) =>
+					(event.start <= start && start <= event.end) ||
+					(event.start <= end && end <= event.end),
+			);
+			return isOverlapping;
+		},
+		[events],
+	);
+
 	const handleSelectSlot = useCallback(
 		async ({ start, end }) => {
+			const isOverlapping = checkForOverlap({ start, end });
+
+			if (isOverlapping) {
+				Toast.fire({
+					icon: 'error',
+					title: 'Sorry But this Slot is Already Reserved',
+					timer: 2500,
+				});
+				return;
+			}
+
 			const { value: title } = await Swal.fire({
 				title: 'Enter Appointment Reason',
 				input: 'text',
@@ -31,7 +54,7 @@ export const Patient = () => {
 				addNewEvent({ start, end, title, ...user });
 			}
 		},
-		[addNewEvent, user],
+		[addNewEvent, user, checkForOverlap],
 	);
 
 	const handleSelectEvent = useCallback(
@@ -78,6 +101,7 @@ export const Patient = () => {
 							},
 						};
 					}}
+					step={30}
 				/>
 			</Box>
 		</Container>
