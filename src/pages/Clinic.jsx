@@ -5,36 +5,36 @@ import moment from 'moment';
 import { Box, Container, useTheme } from '@mui/material';
 import Swal from 'sweetalert2';
 import { Toast } from '../components/Toast/Toast.jsx';
-import { useEvents } from '../context/EventsContext.jsx';
+import { useAppointments } from '../context/AppointmentsContext.jsx';
 
 const localizer = momentLocalizer(moment);
 
 export const Clinic = () => {
 	const theme = useTheme();
-	const { events, setEventStatus } = useEvents();
+	const { appointments, setAppointmentStatus } = useAppointments();
 
 	const handleSelectEvent = useCallback(
-		async (event) => {
-			if (event.status === STATUS.confirmed) {
+		async (appointment) => {
+			if (appointment.status === STATUS.confirmed) {
 				Toast.fire({
 					icon: 'success',
-					title: `Event "${event.title}" Already Reserved`,
+					title: `Event "${appointment.title}" Already Reserved`,
 					timer: 2500,
 				});
 				return;
 			}
 
-			if (event.status === STATUS.rejected) {
+			if (appointment.status === STATUS.rejected) {
 				Toast.fire({
 					icon: 'error',
-					title: `Event "${event.title}" Already Declined`,
+					title: `Event "${appointment.title}" Already Declined`,
 					timer: 2500,
 				});
 				return;
 			}
 
 			const result = await Swal.fire({
-				title: `Approve "${event.title}" or Decline? `,
+				title: `Approve "${appointment.title}" or Decline? `,
 				showCancelButton: true,
 				confirmButtonText: 'Confirm',
 				cancelButtonText: 'Reject',
@@ -44,15 +44,15 @@ export const Clinic = () => {
 			if (!result.isConfirmed && result.dismiss !== 'cancel') return;
 
 			const status = result.isConfirmed ? STATUS.confirmed : STATUS.rejected;
-			setEventStatus(event.id, status);
+			setAppointmentStatus(appointment.id, status);
 
 			Toast.fire({
 				icon: 'success',
-				title: `Event "${event.title}" ${status === STATUS.confirmed ? 'Confirmed' : 'Rejected'} Successfully`,
+				title: `Event "${appointment.title}" ${status === STATUS.confirmed ? 'Confirmed' : 'Rejected'} Successfully`,
 				timer: 2500,
 			});
 		},
-		[setEventStatus],
+		[setAppointmentStatus],
 	);
 
 	const { defaultDate, scrollToTime } = useMemo(
@@ -70,7 +70,7 @@ export const Clinic = () => {
 					defaultDate={defaultDate}
 					defaultView={Views.WEEK}
 					views={['month', 'week', 'day']}
-					events={events}
+					events={appointments}
 					localizer={localizer}
 					onSelectEvent={handleSelectEvent}
 					scrollToTime={scrollToTime}

@@ -12,7 +12,7 @@ import PrivateRoute from './shared/PrivateRoute.jsx';
 import Layout from './shared/Layout.jsx';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { EventsProvider } from './context/EventsContext.jsx';
+import { AppointmentsProvider } from './context/AppointmentsContext.jsx';
 
 const defaultTheme = createTheme({
 	palette: {
@@ -46,9 +46,9 @@ function App() {
 		<ThemeProvider theme={defaultTheme}>
 			<CssBaseline />
 			<GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-				<EventsProvider>
+				<AppointmentsProvider>
 					<MainRouter />
-				</EventsProvider>
+				</AppointmentsProvider>
 			</GoogleOAuthProvider>
 		</ThemeProvider>
 	);

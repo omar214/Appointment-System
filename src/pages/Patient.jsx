@@ -5,26 +5,26 @@ import moment from 'moment';
 import { Container, Box, useTheme } from '@mui/material';
 import Swal from 'sweetalert2';
 import { Toast } from '../components/Toast/Toast.jsx';
-import { useEvents } from '../context/EventsContext.jsx';
+import { useAppointments } from '../context/AppointmentsContext.jsx';
 import { useLocalStorage } from '../hooks/useLocalStorage.js';
 
 const localizer = momentLocalizer(moment);
 
 export const Patient = () => {
 	const theme = useTheme();
-	const { events, addNewEvent } = useEvents();
+	const { appointments, addNewAppointment } = useAppointments();
 	const [user] = useLocalStorage('user', {});
 
 	const checkForOverlap = useCallback(
 		({ start, end }) => {
-			const isOverlapping = events.some(
+			const isOverlapping = appointments.some(
 				(event) =>
 					(event.start <= start && start <= event.end) ||
 					(event.start <= end && end <= event.end),
 			);
 			return isOverlapping;
 		},
-		[events],
+		[appointments],
 	);
 
 	const handleSelectSlot = useCallback(
@@ -51,10 +51,10 @@ export const Patient = () => {
 			if (!title) return;
 
 			if (title) {
-				addNewEvent({ start, end, title, ...user });
+				addNewAppointment({ start, end, title, ...user });
 			}
 		},
-		[addNewEvent, user, checkForOverlap],
+		[addNewAppointment, user, checkForOverlap],
 	);
 
 	const handleSelectEvent = useCallback(
@@ -82,7 +82,7 @@ export const Patient = () => {
 					defaultDate={defaultDate}
 					defaultView={Views.WEEK}
 					views={['month', 'week', 'day']}
-					events={events}
+					events={appointments}
 					localizer={localizer}
 					selectable
 					onSelectEvent={handleSelectEvent}
