@@ -22,6 +22,12 @@ Simple System To Manage Appointments Reservation For Clinic, The System Contains
 - MUI
 - react-big-calendar
 
+## Decisions 
+
+- Orange Slots: The `pending events` which are waiting for Doctor's Approval Or Rejection
+- Green Slots : The `Approved Events` 
+- Red Slots : The `Declined Events`
+
 ## 🏁Getting Started <a name = "start"></a>
 
 1. **_Clone the repository_**
