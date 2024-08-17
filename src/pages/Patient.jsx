@@ -6,14 +6,14 @@ import { Container, Box, useTheme } from '@mui/material';
 import Swal from 'sweetalert2';
 import { Toast } from '../components/Toast/Toast.jsx';
 import { useAppointments } from '../context/AppointmentsContext.jsx';
-import { useLocalStorage } from '../hooks/useLocalStorage.js';
+import { useUser } from '../context/UserContext.jsx';
 
 const localizer = momentLocalizer(moment);
 
 export const Patient = () => {
 	const theme = useTheme();
 	const { appointments, addNewAppointment } = useAppointments();
-	const [user] = useLocalStorage('user', {});
+	const { user } = useUser();
 
 	const checkForOverlap = useCallback(
 		({ start, end }) => {
@@ -51,7 +51,13 @@ export const Patient = () => {
 			if (!title) return;
 
 			if (title) {
-				addNewAppointment({ start, end, title, ...user });
+				addNewAppointment({
+					start,
+					end,
+					title,
+					name: user.name,
+					email: user.email,
+				});
 			}
 		},
 		[addNewAppointment, user, checkForOverlap],

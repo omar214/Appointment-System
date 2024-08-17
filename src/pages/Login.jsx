@@ -12,6 +12,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { useUser } from '../context/UserContext.jsx';
 
 function Copyright(props) {
 	return (
@@ -35,15 +36,15 @@ export const Login = () => {
 	const navigate = useNavigate();
 	const theme = useTheme();
 	const [isClinicAdmin, setIsClinicAdmin] = useState(false);
+	const { user, setUser } = useUser();
 
 	useEffect(() => {
-		const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-		if (isAuthenticated) {
-			navigate(isClinicAdmin ? '/clinic' : '/patient', {
-				replace: true,
-			});
-		}
-	}, [isClinicAdmin, navigate]);
+		if (!user.isAuthenticated) return;
+
+		navigate(isClinicAdmin ? '/clinic' : '/patient', {
+			replace: true,
+		});
+	}, [user.isAuthenticated, navigate, isClinicAdmin]);
 
 	const onSuccessfulLogin = (m) => {
 		const decodedInfo = jwtDecode(m.credential);
@@ -51,11 +52,11 @@ export const Login = () => {
 			email: decodedInfo.email,
 			name: decodedInfo.name,
 			picture: decodedInfo.picture,
+			isClinicAdmin,
+			isAuthenticated: true,
 		};
 
-		localStorage.setItem('user', JSON.stringify(user));
-		localStorage.setItem('isAuthenticated', 'true');
-		localStorage.setItem('isClinicAdmin', isClinicAdmin.toString());
+		setUser(user);
 
 		navigate(isClinicAdmin ? '/clinic' : '/patient', { replace: true });
 	};

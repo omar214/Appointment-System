@@ -13,13 +13,12 @@ import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import { googleLogout } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useUser } from '../context/UserContext.jsx';
 
 export const Navbar = ({ toggleSidebar }) => {
 	const [anchorElUser, setAnchorElUser] = React.useState(null);
 	const navigate = useNavigate();
-	const [user] = useLocalStorage('user', { email: '', name: '', picture: '' });
-	const isClinic = localStorage.getItem('isClinicAdmin') === 'true';
+	const { user, resetUser } = useUser();
 
 	const handleOpenUserMenu = (event) => {
 		setAnchorElUser(event.currentTarget);
@@ -31,7 +30,7 @@ export const Navbar = ({ toggleSidebar }) => {
 
 	const handleLogout = () => {
 		googleLogout();
-		localStorage.clear();
+		resetUser();
 		navigate('/login', { replace: true });
 	};
 
@@ -64,7 +63,7 @@ export const Navbar = ({ toggleSidebar }) => {
 							textDecoration: 'none',
 						}}
 					>
-						{isClinic ? 'Clinic' : 'Patient'}
+						{user.isClinicAdmin ? 'Clinic' : 'Patient'}
 					</Typography>
 					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}></Box>
 

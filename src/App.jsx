@@ -13,6 +13,7 @@ import Layout from './shared/Layout.jsx';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { AppointmentsProvider } from './context/AppointmentsContext.jsx';
+import { UserContextProvider } from './context/UserContext.jsx';
 
 const defaultTheme = createTheme({
 	palette: {
@@ -46,9 +47,11 @@ function App() {
 		<ThemeProvider theme={defaultTheme}>
 			<CssBaseline />
 			<GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-				<AppointmentsProvider>
-					<MainRouter />
-				</AppointmentsProvider>
+				<UserContextProvider>
+					<AppointmentsProvider>
+						<MainRouter />
+					</AppointmentsProvider>
+				</UserContextProvider>
 			</GoogleOAuthProvider>
 		</ThemeProvider>
 	);

@@ -19,13 +19,16 @@ import {
 	StyledListItemButton,
 	StyledListItemIcon,
 } from './styles.js';
+import { useUser } from '../../context/UserContext.jsx';
 
 export const Sidebar = ({ toggleSidebar, isMobile, isSidebarOpen }) => {
 	const { pathname } = useLocation();
 	const [active, setActive] = useState('');
 	const navigate = useNavigate();
 	const theme = useTheme();
-	const isClinicAdmin = localStorage.getItem('isClinicAdmin') === 'true';
+	const {
+		user: { isClinicAdmin },
+	} = useUser();
 
 	const tabs = isClinicAdmin ? navItems.clinic : navItems.patient;
 

@@ -1,8 +1,11 @@
 import { Navigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { useUser } from '../context/UserContext.jsx';
 
 const PrivateRoute = function ({ children }) {
-	const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+	const {
+		user: { isAuthenticated },
+	} = useUser();
 
 	if (!isAuthenticated) {
 		return <Navigate to={'/login'} />;
