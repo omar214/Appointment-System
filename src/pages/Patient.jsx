@@ -60,8 +60,8 @@ export const Patient = () => {
 	const handleSelectEvent = useCallback(
 		(event) =>
 			Toast.fire({
-				icon: 'warning',
-				title: `Reserved Slot for "${event.title}"`,
+				icon: 'error',
+				title: 'Sorry But this Slot is Already Reserved',
 				timer: 2500,
 			}),
 		[],
